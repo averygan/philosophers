@@ -18,13 +18,21 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-typedef struct s_info
+#define NUM_PHILO 1
+#define TTD 2
+#define TTE 3
+#define TTS 4
+#define NUM_MEALS 5
+
+typedef struct s_data
 {
-	int num_philo;
+	long num_philo;
 	long ttd;
 	long tte;
 	long tts;
 	long num_meals;
-}	t_info;
+}	t_data;
+
+int var_init(int argc, char **argv, t_data *data);
 
 #endif

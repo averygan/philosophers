@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME	= philo
-SRCS	= srcs/philo.c
+SRCS	= srcs/philo.c srcs/var_init.c
 OBJS 	= ${SRCS:.c=.o}
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -g
