@@ -74,6 +74,7 @@ int var_init(int argc, char **argv, t_data *data)
 {
 	if (!arg_checker(argc, argv))
 		return (-1);
+	data->sim_end = 0;
 	data->num_philo = ft_atoi(argv[NUM_PHILO]);
 	data->ttd = ft_atoi(argv[TTD]);
 	data->tte = ft_atoi(argv[TTE]);
@@ -82,5 +83,8 @@ int var_init(int argc, char **argv, t_data *data)
 		data->num_meals = ft_atoi(argv[NUM_MEALS]);
 	else
 		data->num_meals = 0;
+	data->start_time = timestamp();
+	pthread_mutex_init(&data->print, NULL);
+	pthread_mutex_init(&data->end_mutex, NULL);
 	return (0);
 }
