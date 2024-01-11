@@ -12,6 +12,7 @@
 
 #include "./philo.h"
 
+// Function to assign two forks to a philosopher
 void assign_forks(t_data *data)
 {
 	int i;
@@ -35,6 +36,7 @@ void assign_forks(t_data *data)
 	}
 }
 
+// Function to loop through n philosophers and create n forks
 void create_forks(t_data *data)
 {
 	int i;
@@ -47,21 +49,10 @@ void create_forks(t_data *data)
 	}
 }
 
-// void print_forks(t_data *data)
-// {
-// 	int i;
-
-// 	i = -1;
-// 	while (++i < data->num_philo)
-// 	{
-// 		printf("philo %d has forks %p and %p\n", i, data->philo[i].fork_one, data->philo[i].fork_two);
-// 	}
-// }
-
+// Initializes philosopher variables
 int philo_init(t_data *data)
 {
 	int i;
-	pthread_t monitoring;
 
 	i = -1;
 	data->philo = malloc(sizeof(t_philo) * data->num_philo);
@@ -76,13 +67,10 @@ int philo_init(t_data *data)
 		data->philo[i].id = i;
 		data->philo[i].dead = 0;
 		data->philo[i].data = data;
+		data->philo[i].eating = 0;
 		data->philo[i].meals_eaten = 0;
 		data->philo[i].last_meal = data->start_time;
 	}
 	assign_forks(data);
-	i = -1;
-	while (++i < data->num_philo)
-		pthread_create(&data->philo[i].thread, NULL, simulation, &data->philo[i]);
-	pthread_create(&monitoring, NULL, ft_monitor, data);
 	return (1);
 }

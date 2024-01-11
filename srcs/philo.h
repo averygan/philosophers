@@ -31,6 +31,8 @@ typedef struct s_philo
 	pthread_t thread;
 	int id;
 	int meals_eaten;
+	int dead;
+	int eating;
 	long int last_meal;
 	pthread_mutex_t eat_mutex;
 	pthread_mutex_t *fork_one;
@@ -48,6 +50,7 @@ typedef struct s_data
 	int dead;
 	t_philo *philo;
 	long int start_time;
+	pthread_t monitoring;
 	pthread_mutex_t end_mutex;
 	pthread_mutex_t *forks;
 	pthread_mutex_t print;
@@ -56,12 +59,13 @@ typedef struct s_data
 // Philo functions
 void *ft_monitor(void *arg);
 void *simulation(void *data);
+void threads_init(t_data *data);
 
 int var_init(int argc, char **argv, t_data *data);
 int philo_init(t_data *data);
 
 // Utils functions
-void print(t_philo *philo, char *str);
+void print(t_philo *philo, char *str, int dead);
 long int timestamp(void);
 int	ft_usleep(long int milliseconds);
 

@@ -70,6 +70,7 @@ bool arg_checker(int argc, char **argv)
 	return (1);
 }
 
+// Initializes variables for data
 int var_init(int argc, char **argv, t_data *data)
 {
 	if (!arg_checker(argc, argv))
