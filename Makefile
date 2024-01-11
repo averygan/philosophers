@@ -14,7 +14,7 @@ NAME	= philo
 SRCS	= srcs/philo.c srcs/var_init.c srcs/philo_init.c srcs/utils.c srcs/simulation.c srcs/monitor.c
 OBJS 	= ${SRCS:.c=.o}
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g
+CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=thread
 RM		= rm -fr
 
 #ft_printf

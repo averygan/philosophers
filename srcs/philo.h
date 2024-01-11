@@ -68,5 +68,6 @@ int philo_init(t_data *data);
 void print(t_philo *philo, char *str, int dead);
 long int timestamp(void);
 int	ft_usleep(long int milliseconds);
+void ft_free(t_data *data);
 
 #endif

@@ -38,7 +38,7 @@ void eat(t_philo *philo)
     pthread_mutex_unlock(&philo->eat_mutex);
     philo->meals_eaten++;
     philo->last_meal = timestamp();
-    ft_usleep(philo->data->tte * 1000);
+    usleep(philo->data->tte * 1000);
     philo->eating = 0;
     pthread_mutex_unlock(philo->fork_one);
     pthread_mutex_unlock(philo->fork_two);
@@ -48,7 +48,7 @@ void eat(t_philo *philo)
 void ft_sleep(t_philo *philo)
 {
     print(philo, "is sleeping", 0);
-    ft_usleep(philo->data->tts * 1000);
+    usleep(philo->data->tts * 1000);
 }
 
 // Start simulation -> loops through eat, sleep, think
@@ -58,7 +58,7 @@ void *simulation(void *data)
 
 	philo = (t_philo *)data;
     if (philo->id % 2 == 0)
-		ft_usleep(1);
+		usleep(100);
 	while (!end_checker(philo) && philo->meals_eaten < philo->data->num_meals)
 	{
 		eat(philo);

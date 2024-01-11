@@ -12,15 +12,25 @@
 
 #include "./philo.h"
 
-// Sleep function
-int	ft_usleep(long int milliseconds)
+// Clean up function to free all memory
+void ft_free(t_data *data)
 {
-	long int	start;
+	int i;
 
-	start = timestamp();
-	while ((timestamp() - start) < milliseconds)
-		usleep(500);
-	return (0);
+	i = -1;
+	pthread_mutex_destroy(&data->end_mutex);
+	pthread_mutex_destroy(&data->print);
+	while (++i < data->num_philo)
+	{
+		pthread_mutex_destroy(&data->philo[i].eat_mutex);
+		pthread_mutex_destroy(data->philo[i].fork_one);
+		pthread_mutex_destroy(data->philo[i].fork_two);
+		pthread_mutex_destroy(&data->forks[i]);
+	}
+	if (data->philo)
+		free(data->philo);
+	if (data->forks)
+		free(data->forks);
 }
 
 // Returns timestamp in milliseconds

@@ -27,4 +27,5 @@ int	main(int argc, char **argv)
 	threads_init(&data);
 	while (++i < data.num_philo)
 		pthread_join(data.philo[i].thread, NULL);
+	ft_free(&data);
 }
