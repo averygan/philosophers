@@ -12,11 +12,11 @@
 
 #include "./philo.h"
 
-// Function to assign two forks to a philosopher
-void assign_forks(t_data *data)
+/* Function to assign left/right forks to philo */
+void	assign_forks(t_data *data)
 {
-	int i;
-	int id;
+	int	i;
+	int	id;
 
 	i = -1;
 	id = 0;
@@ -36,32 +36,41 @@ void assign_forks(t_data *data)
 	}
 }
 
-// Function to loop through n philosophers and create n forks
-void create_forks(t_data *data)
+// void destroy_forks(t_data *data, int i)
+// {
+// 	while (i >= 0)
+
+// }
+
+/* Loop through n philos and create forks */
+int	create_forks(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < data->num_philo)
 	{
-		pthread_mutex_init(&(data->philo[i].eat_mutex), NULL);
-		pthread_mutex_init(&data->forks[i], NULL);
+		if (pthread_mutex_init(&(data->philo[i].eat_mutex), NULL))
+			return (print_err(MUTEX_ERR), 1);
+		if (pthread_mutex_init(&data->forks[i], NULL))
+			return (print_err(MUTEX_ERR), 1);
 	}
+	return (0);
 }
 
-// Initializes philosopher variables
-int philo_init(t_data *data)
+int	philo_init(t_data *data)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	data->philo = malloc(sizeof(t_philo) * data->num_philo);
 	if (!data->philo)
-		return (0);
+		return (print_err(MEM_ERR), 1);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->num_philo);
 	if (!data->forks)
-		return (0);
-	create_forks(data);
+		return (print_err(MEM_ERR), 1);
+	if (create_forks(data))
+		return (1);
 	while (++i < data->num_philo)
 	{
 		data->philo[i].id = i;
@@ -72,5 +81,5 @@ int philo_init(t_data *data)
 		data->philo[i].last_meal = data->start_time;
 	}
 	assign_forks(data);
-	return (1);
+	return (0);
 }

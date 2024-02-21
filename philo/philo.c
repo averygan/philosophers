@@ -1,42 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_helper.c                                        :+:      :+:    :+:   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agan <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/12 17:48:54 by agan              #+#    #+#             */
-/*   Updated: 2023/09/12 17:49:08 by agan             ###   ########.fr       */
+/*   Created: 2024/01/03 15:10:13 by agan              #+#    #+#             */
+/*   Updated: 2024/01/03 15:10:14 by agan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "./philo.h"
 
-/*Helper functions for output*/
-int	ft_putchar(unsigned int c)
+int	main(int argc, char **argv)
 {
-	write(1, &c, 1);
-	return (1);
-}
+	t_data	data;
+	int		i;
 
-int	ft_putstr(char *s)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	if (!s)
-	{
-		write (1, "(null)", 6);
-		count += 6;
-		return (count);
-	}
-	while (s[i])
-	{
-		write (1, &s[i], 1);
-		i++;
-		count++;
-	}
-	return (count);
+	i = -1;
+	if (argc != 5 && argc != 6)
+		return (print_err(ARG_ERR), 1);
+	if (var_init(argc, argv, &data))
+		return (1);
+	if (philo_init(&data))
+		return (1);
+	threads_init(&data);
+	while (++i < data.num_philo)
+		pthread_join(data.philo[i].thread, NULL);
+	pthread_join(data.monitoring, NULL);
+	ft_free(&data);
 }

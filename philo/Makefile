@@ -5,33 +5,34 @@
 #                                                     +:+ +:+         +:+      #
 #    By: agan <marvin@42.fr>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/12 14:37:38 by agan              #+#    #+#              #
-#    Updated: 2023/09/12 14:37:46 by agan             ###   ########.fr        #
+#    Created: 2024/01/03 15:02:50 by agan              #+#    #+#              #
+#    Updated: 2024/01/03 15:02:51 by agan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	= ft_helper.c ft_printf.c ft_numbers.c
-OBJS	= ${SRCS:.c=.o}
-NAME	= libftprintf.a
-LIBC	= ar rc
-CC	= gcc
-RM	= rm -f
-CFLAGS = -Wall -Wextra -Werror
+NAME	= philo
+SRCS	= philo.c var_init.c philo_init.c utils.c simulation.c monitor.c
+OBJS 	= ${SRCS:.c=.o}
+CC		= cc
+CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=thread
+RM		= rm -fr
+HEADER	= philo.h
 
 all: ${NAME}
 
-.c.o:
-	@${CC} ${CFLAGS} -c $< -o $@
-	@echo "$< compiled"
+${NAME} : ${OBJS} ${HEADER}
+	@$(CC) ${CFLAGS} ${OBJS} -o ${NAME}
+	@echo "philosophers compiled!"
 
-${NAME}: ${OBJS}
-	@${LIBC} ${NAME} ${OBJS}
+.c.o:
+	@$(CC) ${CFLAGS} -c $< -o $@
 
 clean:
 	@${RM} ${OBJS}
 
 fclean: clean
 	@${RM} ${NAME}
+	@echo "fclean completed!"
 
 re: fclean all
 

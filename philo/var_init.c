@@ -45,11 +45,11 @@ int	ft_atoi(const char *nptr)
 	return (res * sign);
 }
 
-// Checks for negative values or non valid integers
-bool arg_checker(int argc, char **argv)
+/* Checks for negative values or non valid integers */
+bool	arg_checker(int argc, char **argv)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 1;
 	while (i < argc)
@@ -58,11 +58,11 @@ bool arg_checker(int argc, char **argv)
 		if (argv[i][0] == '+')
 			j++;
 		else if (argv[i][0] == '-')
-			return (0);
+			return (print_err(NUM_ERR), 0);
 		while (argv[i][j])
 		{
 			if (!ft_isdigit(argv[i][j]))
-				return (0);
+				return (print_err(NUM_ERR), 0);
 			j++;
 		}
 		i++;
@@ -70,11 +70,11 @@ bool arg_checker(int argc, char **argv)
 	return (1);
 }
 
-// Initializes variables for data
-int var_init(int argc, char **argv, t_data *data)
+/* Initializes variables for data */
+int	var_init(int argc, char **argv, t_data *data)
 {
 	if (!arg_checker(argc, argv))
-		return (-1);
+		return (1);
 	data->sim_end = 0;
 	data->num_philo = ft_atoi(argv[NUM_PHILO]);
 	data->ttd = ft_atoi(argv[TTD]);
@@ -83,9 +83,11 @@ int var_init(int argc, char **argv, t_data *data)
 	if (argc == 6)
 		data->num_meals = ft_atoi(argv[NUM_MEALS]);
 	else
-		data->num_meals = 0;
+		data->num_meals = -1;
 	data->start_time = timestamp();
-	pthread_mutex_init(&data->print, NULL);
-	pthread_mutex_init(&data->end_mutex, NULL);
+	if (pthread_mutex_init(&data->print, NULL))
+		return (print_err(MUTEX_ERR), 1);
+	if (pthread_mutex_init(&data->end_mutex, NULL))
+		return (print_err(MUTEX_ERR), 1);
 	return (0);
 }
