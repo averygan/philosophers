@@ -39,12 +39,12 @@ void	eat(t_philo *philo)
 	print(philo, "has taken a fork", 0);
 	pthread_mutex_lock(&philo->eat_mutex);
 	philo->eating = 1;
+	philo->last_meal = timestamp();
 	print(philo, "is eating", 0);
 	philo->meals_eaten++;
-	philo->last_meal = timestamp();
+	pthread_mutex_unlock(&philo->eat_mutex);
 	ft_usleep(philo->data->tte);
 	philo->eating = 0;
-	pthread_mutex_unlock(&philo->eat_mutex);
 	pthread_mutex_unlock(philo->fork_one);
 	pthread_mutex_unlock(philo->fork_two);
 }
@@ -74,7 +74,7 @@ void	*simulation(void *data)
 			ft_sleep(philo);
 			print(philo, "is thinking", 0);
 		}
-		if (philo->id == 0)
+		if (philo->id % 2)
 			ft_usleep(1);
 		if (philo->data->num_philo == 1)
 			break ;
