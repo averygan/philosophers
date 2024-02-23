@@ -73,9 +73,9 @@ void	*simulation(void *data)
 		{
 			ft_sleep(philo);
 			print(philo, "is thinking", 0);
+			if ((philo->data->num_philo % 2))
+				ft_usleep(1);
 		}
-		if (philo->id % 2)
-			ft_usleep(1);
 		if (philo->data->num_philo == 1)
 			break ;
 	}
