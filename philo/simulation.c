@@ -30,6 +30,11 @@ void	eat(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork_one);
 	print(philo, "has taken a fork", 0);
+	if (philo->data->num_philo == 1)
+	{
+		pthread_mutex_unlock(philo->fork_one);
+		return ;
+	}
 	pthread_mutex_lock(philo->fork_two);
 	print(philo, "has taken a fork", 0);
 	pthread_mutex_lock(&philo->eat_mutex);
@@ -64,10 +69,15 @@ void	*simulation(void *data)
 		&& philo->data->num_meals > -1) || philo->data->num_meals == -1))
 	{
 		eat(philo);
-		ft_sleep(philo);
-		print(philo, "is thinking", 0);
+		if (philo->data->num_philo > 1)
+		{
+			ft_sleep(philo);
+			print(philo, "is thinking", 0);
+		}
 		if (philo->id == 0)
 			ft_usleep(1);
+		if (philo->data->num_philo == 1)
+			break ;
 	}
 	return (NULL);
 }

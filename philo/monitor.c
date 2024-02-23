@@ -22,20 +22,43 @@ int	death_check(t_philo *philo, long ttd)
 	return (0);
 }
 
+/* Function to check if all philos are full */
+int	meals_check(t_data *data)
+{
+	int	i;
+	int	meals_flag;
+
+	i = -1;
+	meals_flag = 0;
+	while (++i < data->num_philo)
+	{
+		pthread_mutex_lock(&data->philo[i].eat_mutex);
+		if ((data->philo[i].meals_eaten < data->num_meals && \
+			data->num_meals > -1) || data->num_meals == -1)
+			meals_flag = 1;
+		pthread_mutex_unlock(&data->philo[i].eat_mutex);
+	}
+	if (meals_flag == 0)
+	{
+		pthread_mutex_lock(&data->end_mutex);
+		data->sim_end = 1;
+		pthread_mutex_unlock(&data->end_mutex);
+	}
+	return (meals_flag);
+}
+
 /* Monitoring thread
 - Checks for 1) If philos are dead, sim ends
 			 2) If all philos are full, sim ends */
 void	*ft_monitor(void *arg)
 {
 	int		i;
-	int		meals_flag;
 	t_data	*data;
 
 	data = (t_data *)arg;
 	while (1)
 	{
 		i = -1;
-		meals_flag = 0;
 		while (++i < data->num_philo)
 		{
 			if (death_check(&data->philo[i], data->ttd))
@@ -44,26 +67,11 @@ void	*ft_monitor(void *arg)
 				data->sim_end = 1;
 				data->philo[i].dead = 1;
 				pthread_mutex_unlock(&data->end_mutex);
-				print(&data->philo[i], "died", 1);
-				return (NULL);
+				return (print(&data->philo[i], "died", 1), NULL);
 			}
 		}
-		i = -1;
-		while (++i < data->num_philo)
-		{
-			pthread_mutex_lock(&data->philo[i].eat_mutex);
-			if ((data->philo[i].meals_eaten < data->num_meals && data->num_meals > -1) \
-				|| data->num_meals == -1)
-				meals_flag = 1;
-			pthread_mutex_unlock(&data->philo[i].eat_mutex);
-		}
-		if (meals_flag == 0)
-		{
-			pthread_mutex_lock(&data->end_mutex);
-			data->sim_end = 1;
-			pthread_mutex_unlock(&data->end_mutex);
+		if (meals_check(data) == 0)
 			break ;
-		}
 	}
 	return (NULL);
 }

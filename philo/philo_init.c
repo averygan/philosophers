@@ -36,12 +36,6 @@ void	assign_forks(t_data *data)
 	}
 }
 
-// void destroy_forks(t_data *data, int i)
-// {
-// 	while (i >= 0)
-
-// }
-
 /* Loop through n philos and create forks */
 int	create_forks(t_data *data)
 {
