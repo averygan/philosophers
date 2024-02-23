@@ -14,7 +14,7 @@ NAME	= philo
 SRCS	= philo.c var_init.c philo_init.c utils.c simulation.c monitor.c
 OBJS 	= ${SRCS:.c=.o}
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g -fsanitize=thread
+CFLAGS	= -Wall -Wextra -Werror
 RM		= rm -fr
 HEADER	= philo.h
 
