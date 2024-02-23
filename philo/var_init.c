@@ -20,11 +20,18 @@ int	ft_isdigit(int c)
 		return (0);
 }
 
-int	ft_atoi(const char *nptr)
+int	int_checker(long num)
 {
-	int	res;
-	int	i;
-	int	sign;
+	if (num > 2147483647 || num < -2147483648)
+		return (0);
+	return (1);
+}
+
+long	ft_atoi(const char *nptr)
+{
+	long	res;
+	long	i;
+	int		sign;
 
 	res = 0;
 	i = 0;
@@ -84,6 +91,10 @@ int	var_init(int argc, char **argv, t_data *data)
 		data->num_meals = ft_atoi(argv[NUM_MEALS]);
 	else
 		data->num_meals = -1;
+	if (!int_checker(data->num_philo) || !int_checker(data->ttd) || \
+		!int_checker(data->tte) || !int_checker(data->tts) || \
+		!int_checker(data->num_meals))
+		return (print_err(NUM_ERR), 1);
 	data->start_time = timestamp();
 	if (pthread_mutex_init(&data->print, NULL))
 		return (print_err(MUTEX_ERR), 1);

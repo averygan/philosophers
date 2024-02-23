@@ -71,7 +71,7 @@ void	print_err(int err)
 	if (err == ARG_ERR)
 		printf("error: ./philo [NO. PHILOS] [TTD] [TTE] [TTS] [NO. MEALS]\n");
 	else if (err == NUM_ERR)
-		printf("error: philo takes positive, numeric arguments only\n");
+		printf("error: philo takes positive, numeric integer arguments only\n");
 	else if (err == PTHREAD_ERR)
 		printf("philo: error creating thread\n");
 	else if (err == MUTEX_ERR)
